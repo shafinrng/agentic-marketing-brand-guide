@@ -1,0 +1,529 @@
+import React, { useState } from 'react';
+import { Type, Copy, Check, Info, AlertTriangle, XCircle, Layout, Palette, MousePointer } from 'lucide-react';
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [copiedColor, setCopiedColor] = useState(null);
+
+  // --- LOGO FILE NAMES ---
+  // Netlify will host these in a folder structure (e.g., /public/assets).
+  // You will need to upload these files manually to your GitHub repository
+  // in a folder named 'public/assets' for the image paths to work.
+  const logoPath = "/assets/AgenticMarketingPro-logo-final.png";
+  const iconPath = "/assets/Icon-Final-AgenticMarketingPro.jpg";
+  // -------------------------
+
+  // Color Data Structure
+  const colors = {
+    primary: [
+      { name: 'Teal Bright', hex: '#28CCCD', description: 'Primary Brand Color' },
+      { name: 'Aqua Light', hex: '#3CDECF', description: 'Highlight & Accents' },
+      { name: 'Mint Glow', hex: '#6AFADF', description: 'Gradients & Glows' },
+      { name: 'Soft Mint', hex: '#C0FEE9', description: 'Subtle Backgrounds' },
+    ],
+    dark: [
+      { name: 'Navy Charcoal', hex: '#353B5B', description: 'Primary Text / Headings' },
+      { name: 'Slate Blue', hex: '#525C75', description: 'Secondary Text' },
+      { name: 'Cool Gray', hex: '#72778A', description: 'Body Text Support' },
+      { name: 'Mist Gray', hex: '#A4A8B1', description: 'Disabled States / Borders' },
+    ],
+    ui: [
+      { name: 'Background Light', hex: '#F7F9FA', description: 'Main Page Background' },
+      { name: 'Background Soft', hex: '#EEF1F3', description: 'Sidebar / Card Background' },
+      { name: 'Divider Lines', hex: '#E3E6EA', description: 'Borders & Separators' },
+      { name: 'Text Dark', hex: '#1E1E1E', description: 'High Contrast Text' },
+      { name: 'Text Medium', hex: '#4A4A4A', description: 'Standard Body Text' },
+    ],
+    cta: [
+      { name: 'CTA Primary', hex: '#0FB6B7', description: 'Primary Buttons' },
+      { name: 'CTA Hover', hex: '#0AA3A4', description: 'Button Hover State' },
+      { name: 'Accent Secondary', hex: '#14E2CE', description: 'Vibrant Highlights' },
+    ],
+    system: [
+      { name: 'Success', hex: '#3FBF72', description: 'Confirmation Messages' },
+      { name: 'Warning', hex: '#FFB648', description: 'Alerts & Attention' },
+      { name: 'Error', hex: '#E25555', description: 'Form Errors / Deletion' },
+      { name: 'Info', hex: '#2F80ED', description: 'Informational Toasts' },
+    ]
+  };
+
+  const handleCopy = (hex) => {
+    navigator.clipboard.writeText(hex);
+    setCopiedColor(hex);
+    setTimeout(() => setCopiedColor(null), 2000);
+  };
+
+  // Typography Data
+  const typography = [
+    { role: 'H1', font: 'Mona Sans', weight: 'Bold (700)', size: '54–64px', usage: 'Main Hero Headings' },
+    { role: 'H2', font: 'Mona Sans', weight: 'Semibold (600)', size: '40–48px', usage: 'Section Headings' },
+    { role: 'H3', font: 'Mona Sans', weight: 'Medium (500)', size: '28–32px', usage: 'Card Titles' },
+    { role: 'H4', font: 'Mona Sans', weight: 'Medium (500)', size: '22–24px', usage: 'Subheadings' },
+    { role: 'Body Large', font: 'Satoshi', weight: 'Regular (400)', size: '18–20px', usage: 'Intro text, Lead paragraphs' },
+    { role: 'Body Regular', font: 'Satoshi', weight: 'Regular (400)', size: '16px', usage: 'Standard paragraph text' },
+    { role: 'Stats / Numbers', font: 'Space Grotesk', weight: 'Semibold (600)', size: 'Variable', usage: 'Data visualization, Pricing' },
+  ];
+
+  // Placeholder functions for onError
+  const logoPlaceholder = "https://placehold.co/600x150/ffffff/353B5B?text=Agentic+Marketing+Pro";
+  const iconPlaceholder = "https://placehold.co/100x100/353B5B/28CCCD?text=A";
+
+  // Component structure... (Rest of the component is identical to previous response, using logoPath and iconPath)
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans pb-20">
+      {/* Import Google Fonts that approximate the premium fonts for preview purposes */}
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500&family=Space+Grotesk:wght@400;600&display=swap');
+          
+          .font-mona { font-family: 'Plus Jakarta Sans', sans-serif; } /* Proxy for Mona Sans */
+          .font-satoshi { font-family: 'Inter', sans-serif; } /* Proxy for Satoshi */
+          .font-space { font-family: 'Space Grotesk', sans-serif; }
+        `}
+      </style>
+
+      {/* Navigation Sidebar / Header */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+             <img 
+               src={iconPath} 
+               alt="Logo Icon" 
+               className="h-8 w-8 rounded object-cover" 
+               onError={(e) => {e.target.onerror = null; e.target.src=iconPlaceholder}}
+             />
+            <span className="font-mona font-bold text-xl text-[#353B5B]">Brand Guidelines</span>
+          </div>
+          <div className="flex gap-6 text-sm font-medium text-slate-500">
+            <button 
+              onClick={() => setActiveTab('overview')}
+              className={`hover:text-[#28CCCD] transition-colors ${activeTab === 'overview' ? 'text-[#28CCCD]' : ''}`}
+            >
+              Overview
+            </button>
+            <button 
+              onClick={() => setActiveTab('logos')}
+              className={`hover:text-[#28CCCD] transition-colors ${activeTab === 'logos' ? 'text-[#28CCCD]' : ''}`}
+            >
+              Logos
+            </button>
+            <button 
+              onClick={() => setActiveTab('colors')}
+              className={`hover:text-[#28CCCD] transition-colors ${activeTab === 'colors' ? 'text-[#28CCCD]' : ''}`}
+            >
+              Colors
+            </button>
+            <button 
+              onClick={() => setActiveTab('typography')}
+              className={`hover:text-[#28CCCD] transition-colors ${activeTab === 'typography' ? 'text-[#28CCCD]' : ''}`}
+            >
+              Typography
+            </button>
+            <button 
+              onClick={() => setActiveTab('ui')}
+              className={`hover:text-[#28CCCD] transition-colors ${activeTab === 'ui' ? 'text-[#28CCCD]' : ''}`}
+            >
+              UI System
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        
+        {/* OVERVIEW SECTION */}
+        {activeTab === 'overview' && (
+          <div className="animate-fade-in">
+            <div className="bg-[#353B5B] rounded-3xl p-12 text-white mb-12 shadow-xl overflow-hidden relative">
+               <div className="absolute top-0 right-0 w-64 h-64 bg-[#28CCCD] rounded-full filter blur-[80px] opacity-20 transform translate-x-1/2 -translate-y-1/2"></div>
+               <div className="relative z-10">
+                 <div className="flex flex-col md:flex-row items-center gap-8">
+                    <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm border border-white/10">
+                        <img 
+                          src={logoPath} 
+                          alt="Agentic Marketing Pro Logo" 
+                          className="h-20 w-auto"
+                          onError={(e) => {e.target.onerror = null; e.target.src=logoPlaceholder}}
+                        />
+                    </div>
+                    <div>
+                        <h1 className="font-mona text-5xl font-bold mb-4">Agentic Marketing Pro</h1>
+                        <p className="font-satoshi text-xl text-slate-300 max-w-2xl">
+                          Professional. Tech-forward. Human-AI Hybrid.
+                        </p>
+                        <p className="mt-4 font-satoshi text-slate-400 max-w-2xl leading-relaxed">
+                          This design system unifies the brand identity across all digital touchpoints. 
+                          It combines the precision of artificial intelligence with the warmth of human creativity, 
+                          represented through a balance of vibrant teals, deep navies, and clean, modern typography.
+                        </p>
+                    </div>
+                 </div>
+               </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-[#C0FEE9] rounded-xl flex items-center justify-center text-[#28CCCD] mb-6">
+                  <Layout size={24} />
+                </div>
+                <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-2">Modern Layouts</h3>
+                <p className="font-satoshi text-slate-500">Clean, spacious layouts that emphasize content and readability.</p>
+              </div>
+              <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-[#F7F9FA] rounded-xl flex items-center justify-center text-[#353B5B] mb-6">
+                  <Type size={24} />
+                </div>
+                <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-2">Clear Typography</h3>
+                <p className="font-satoshi text-slate-500">A hierarchy built on Mona Sans for impact and Satoshi for clarity.</p>
+              </div>
+              <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 bg-[#E25555]/10 rounded-xl flex items-center justify-center text-[#E25555] mb-6">
+                  <Palette size={24} />
+                </div>
+                <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-2">Strategic Color</h3>
+                <p className="font-satoshi text-slate-500">Colors used intentionally to guide user action and provide feedback.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* LOGOS SECTION */}
+        {activeTab === 'logos' && (
+          <div className="animate-fade-in space-y-12">
+            <div className="text-center mb-12">
+              <h2 className="font-mona text-4xl font-bold text-[#353B5B] mb-4">Logo Guidelines</h2>
+              <p className="font-satoshi text-slate-500">Our logo is the most recognizable element of our brand. Consistent usage is key.</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="bg-white p-12 rounded-2xl border border-slate-200 flex flex-col items-center justify-center min-h-[400px]">
+                <img 
+                  src={logoPath} 
+                  alt="Primary Logo" 
+                  className="w-full max-w-md h-auto mb-8"
+                  onError={(e) => {e.target.onerror = null; e.target.src=logoPlaceholder}} 
+                />
+                <div className="text-center">
+                  <h3 className="font-mona text-lg font-bold text-[#353B5B]">Primary Wordmark</h3>
+                  <p className="font-satoshi text-sm text-slate-400 mt-1">Use on light backgrounds. Minimum width: 140px.</p>
+                </div>
+              </div>
+
+              <div className="bg-[#353B5B] p-12 rounded-2xl border border-slate-700 flex flex-col items-center justify-center min-h-[400px]">
+                {/* Note: In a real scenario, you'd use a white version of the logo here. Since we only have one image, we'll display the icon or add a note about the inverse logo */}
+                <div className="bg-white/10 p-8 rounded-full backdrop-blur-md mb-8">
+                    <img 
+                      src={iconPath} 
+                      alt="Icon Logo" 
+                      className="w-32 h-32 rounded-full object-cover" 
+                      onError={(e) => {e.target.onerror = null; e.target.src=iconPlaceholder}}
+                    />
+                </div>
+                <div className="text-center text-white">
+                  <h3 className="font-mona text-lg font-bold">Brand Symbol / Icon</h3>
+                  <p className="font-satoshi text-sm text-slate-300 mt-1">Use for avatars, favicons, or when space is limited.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                    <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-6 flex items-center gap-2">
+                        <Check className="text-[#3FBF72]" /> Clear Space
+                    </h3>
+                    <div className="bg-slate-50 p-12 flex items-center justify-center relative border border-dashed border-slate-300 rounded-lg">
+                        <div className="absolute inset-0 m-6 border border-[#28CCCD]/50 border-dashed rounded pointer-events-none"></div>
+                        <img src={logoPath} alt="Logo Spacing" className="h-12 w-auto" />
+                    </div>
+                    <p className="font-satoshi text-sm text-slate-500 mt-4">
+                        Always maintain clear space around the logo equal to the height of the 'A' icon.
+                    </p>
+                </div>
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                    <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-6 flex items-center gap-2">
+                        <XCircle className="text-[#E25555]" /> Unacceptable Usage
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-slate-50 h-32 flex items-center justify-center rounded border border-slate-100 relative overflow-hidden group">
+                             <div className="absolute inset-0 bg-[#E25555]/10 hidden group-hover:flex items-center justify-center">
+                                <span className="text-xs font-bold text-[#E25555] bg-white px-2 py-1 rounded">Do not stretch</span>
+                             </div>
+                             <img src={logoPath} alt="Stretched" className="h-8 w-auto transform scale-x-150" />
+                        </div>
+                        <div className="bg-slate-50 h-32 flex items-center justify-center rounded border border-slate-100 relative overflow-hidden group">
+                             <div className="absolute inset-0 bg-[#E25555]/10 hidden group-hover:flex items-center justify-center">
+                                <span className="text-xs font-bold text-[#E25555] bg-white px-2 py-1 rounded">Do not rotate</span>
+                             </div>
+                             <img src={logoPath} alt="Rotated" className="h-8 w-auto transform -rotate-12" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        )}
+
+        {/* COLORS SECTION */}
+        {activeTab === 'colors' && (
+          <div className="animate-fade-in">
+            <div className="text-center mb-12">
+              <h2 className="font-mona text-4xl font-bold text-[#353B5B] mb-4">Color Palette</h2>
+              <p className="font-satoshi text-slate-500">Click any color card to copy its HEX code.</p>
+            </div>
+
+            {Object.entries(colors).map(([category, palette]) => (
+              <div key={category} className="mb-12">
+                <h3 className="font-mona text-2xl font-bold text-[#353B5B] capitalize mb-6 flex items-center gap-3">
+                  {category === 'primary' && <span className="w-3 h-3 rounded-full bg-[#28CCCD]"></span>}
+                  {category === 'dark' && <span className="w-3 h-3 rounded-full bg-[#353B5B]"></span>}
+                  {category === 'ui' && <span className="w-3 h-3 rounded-full bg-slate-300"></span>}
+                  {category === 'system' && <span className="w-3 h-3 rounded-full bg-[#3FBF72]"></span>}
+                  {category} Colors
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {palette.map((color) => (
+                    <button
+                      key={color.hex}
+                      onClick={() => handleCopy(color.hex)}
+                      className="group text-left bg-white rounded-xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-slate-100 overflow-hidden flex flex-col"
+                    >
+                      <div className="h-32 w-full relative" style={{ backgroundColor: color.hex }}>
+                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
+                            <span className="bg-white text-xs font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
+                                {copiedColor === color.hex ? <Check size={12}/> : <Copy size={12}/>}
+                                {copiedColor === color.hex ? 'Copied!' : 'Copy'}
+                            </span>
+                         </div>
+                      </div>
+                      <div className="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <p className="font-mona font-bold text-[#353B5B] text-lg">{color.name}</p>
+                            <p className="font-satoshi text-slate-400 text-xs mt-1">{color.description}</p>
+                        </div>
+                        <p className="font-mono text-sm text-slate-500 mt-4 bg-slate-50 p-2 rounded text-center border border-slate-100">
+                            {color.hex}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* TYPOGRAPHY SECTION */}
+        {activeTab === 'typography' && (
+          <div className="animate-fade-in">
+            <div className="text-center mb-12">
+              <h2 className="font-mona text-4xl font-bold text-[#353B5B] mb-4">Typography System</h2>
+              <p className="font-satoshi text-slate-500">
+                A tri-font system: <span className="font-bold">Mona Sans</span> for structure, <span className="font-bold">Satoshi</span> for flow, and <span className="font-bold">Space Grotesk</span> for data.
+              </p>
+            </div>
+
+            {/* Font Showcase */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                 {/* Primary Font */}
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                    <div className="flex items-center justify-between mb-6">
+                        <span className="text-xs font-bold tracking-widest text-[#28CCCD] uppercase">Headings</span>
+                        <span className="text-xs text-slate-400">Mona Sans</span>
+                    </div>
+                    <div className="font-mona text-6xl text-[#353B5B] mb-4">Aa</div>
+                    <p className="font-mona text-2xl font-bold text-[#353B5B] mb-2">The quick brown fox</p>
+                    <div className="flex gap-2 mt-6">
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Bold 700</span>
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Semi 600</span>
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Med 500</span>
+                    </div>
+                 </div>
+
+                 {/* Secondary Font */}
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                    <div className="flex items-center justify-between mb-6">
+                        <span className="text-xs font-bold tracking-widest text-[#72778A] uppercase">Body</span>
+                        <span className="text-xs text-slate-400">Satoshi</span>
+                    </div>
+                    <div className="font-satoshi text-6xl text-[#353B5B] mb-4">Aa</div>
+                    <p className="font-satoshi text-lg text-[#353B5B] mb-2 leading-relaxed">
+                        The quick brown fox jumps over the lazy dog. A clear, legible font for long-form reading.
+                    </p>
+                    <div className="flex gap-2 mt-6">
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Reg 400</span>
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Med 500</span>
+                    </div>
+                 </div>
+
+                 {/* Accent Font */}
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                    <div className="flex items-center justify-between mb-6">
+                        <span className="text-xs font-bold tracking-widest text-[#14E2CE] uppercase">Data & Tech</span>
+                        <span className="text-xs text-slate-400">Space Grotesk</span>
+                    </div>
+                    <div className="font-space text-6xl text-[#353B5B] mb-4">100%</div>
+                    <p className="font-space text-xl text-[#353B5B] mb-2">
+                        1,234,567
+                    </p>
+                    <div className="flex gap-2 mt-6">
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Reg 400</span>
+                        <span className="px-2 py-1 bg-slate-100 rounded text-xs text-slate-500">Bold 600</span>
+                    </div>
+                 </div>
+            </div>
+
+            {/* Type Scale Table */}
+            <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden">
+                <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50">
+                    <h3 className="font-mona text-xl font-bold text-[#353B5B]">Type Scale</h3>
+                </div>
+                <div className="divide-y divide-slate-100">
+                    {typography.map((type, index) => (
+                        <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-8 items-center hover:bg-slate-50 transition-colors">
+                            <div className="md:col-span-2">
+                                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">{type.role}</span>
+                            </div>
+                            <div className="md:col-span-6">
+                                <p 
+                                    className={`${type.font === 'Mona Sans' ? 'font-mona' : type.font === 'Satoshi' ? 'font-satoshi' : 'font-space'} text-[#353B5B]`}
+                                    style={{ 
+                                        fontSize: type.size.includes('px') ? type.size.split('–')[0] : '24px',
+                                        fontWeight: type.weight.includes('Bold') ? 700 : type.weight.includes('Semibold') ? 600 : type.weight.includes('Medium') ? 500 : 400 
+                                    }}
+                                >
+                                    Agentic Marketing Pro
+                                </p>
+                            </div>
+                            <div className="md:col-span-4 text-right md:text-left flex flex-col gap-1">
+                                <div className="text-xs font-bold text-[#28CCCD]">{type.font}</div>
+                                <div className="text-xs text-slate-500">{type.weight} • {type.size}</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+          </div>
+        )}
+
+         {/* UI SYSTEM SECTION */}
+         {activeTab === 'ui' && (
+          <div className="animate-fade-in space-y-12">
+             <div className="text-center">
+                <h2 className="font-mona text-4xl font-bold text-[#353B5B] mb-4">UI Component System</h2>
+                <p className="font-satoshi text-slate-500">Ready-to-use elements based on the extended color palette.</p>
+             </div>
+
+             {/* Buttons */}
+             <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-8">Buttons</h3>
+                <div className="flex flex-wrap gap-8 items-center">
+                    {/* Primary Button */}
+                    <div className="text-center">
+                        <button className="bg-[#0FB6B7] hover:bg-[#0AA3A4] text-white px-8 py-3 rounded-lg font-mona font-semibold shadow-lg shadow-[#0FB6B7]/30 transition-all active:scale-95">
+                            Primary CTA
+                        </button>
+                        <p className="mt-4 text-xs font-mono text-slate-400">bg-[#0FB6B7]</p>
+                    </div>
+
+                    {/* Secondary/Outline Button */}
+                    <div className="text-center">
+                        <button className="bg-transparent border-2 border-[#353B5B] text-[#353B5B] hover:bg-[#353B5B] hover:text-white px-8 py-3 rounded-lg font-mona font-semibold transition-all active:scale-95">
+                            Secondary Action
+                        </button>
+                        <p className="mt-4 text-xs font-mono text-slate-400">border-[#353B5B]</p>
+                    </div>
+
+                    {/* Ghost Button */}
+                     <div className="text-center">
+                        <button className="bg-transparent text-[#525C75] hover:text-[#28CCCD] px-8 py-3 font-mona font-medium transition-all">
+                            Ghost Link
+                        </button>
+                        <p className="mt-4 text-xs font-mono text-slate-400">text-[#525C75]</p>
+                    </div>
+                </div>
+             </div>
+
+             {/* Alerts & Cards */}
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                    <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-8">Alert States</h3>
+                    <div className="space-y-4">
+                        <div className="bg-[#3FBF72]/10 border border-[#3FBF72]/20 p-4 rounded-lg flex items-start gap-3">
+                            <Check size={20} className="text-[#3FBF72] mt-0.5" />
+                            <div>
+                                <h4 className="font-mona font-bold text-[#3FBF72] text-sm">Success Message</h4>
+                                <p className="font-satoshi text-[#3FBF72]/80 text-sm">Action completed successfully.</p>
+                            </div>
+                        </div>
+                        <div className="bg-[#FFB648]/10 border border-[#FFB648]/20 p-4 rounded-lg flex items-start gap-3">
+                            <AlertTriangle size={20} className="text-[#FFB648] mt-0.5" />
+                            <div>
+                                <h4 className="font-mona font-bold text-[#FFB648] text-sm">Warning Notification</h4>
+                                <p className="font-satoshi text-[#FFB648]/80 text-sm">Please review your inputs.</p>
+                            </div>
+                        </div>
+                         <div className="bg-[#E25555]/10 border border-[#E25555]/20 p-4 rounded-lg flex items-start gap-3">
+                            <XCircle size={20} className="text-[#E25555] mt-0.5" />
+                            <div>
+                                <h4 className="font-mona font-bold text-[#E25555] text-sm">Critical Error</h4>
+                                <p className="font-satoshi text-[#E25555]/80 text-sm">Unable to save changes.</p>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+
+                 {/* Card Example */}
+                 <div className="bg-[#EEF1F3] p-8 rounded-2xl border border-slate-200">
+                     <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-8">Card Component</h3>
+                     <div className="bg-white rounded-xl shadow-sm border border-[#E3E6EA] p-6 hover:shadow-md transition-shadow cursor-pointer">
+                        <div className="flex justify-between items-start mb-4">
+                            <div className="w-10 h-10 rounded-full bg-[#C0FEE9] flex items-center justify-center text-[#0FB6B7]">
+                                <MousePointer size={20} />
+                            </div>
+                            <span className="font-space font-bold text-[#353B5B] text-xl">85%</span>
+                        </div>
+                        <h4 className="font-mona font-bold text-[#1E1E1E] text-lg mb-2">Campaign Performance</h4>
+                        <p className="font-satoshi text-[#72778A] text-sm mb-4">
+                            Analytics overview for the current active period.
+                        </p>
+                        <div className="w-full bg-[#EEF1F3] h-2 rounded-full overflow-hidden">
+                            <div className="bg-[#28CCCD] h-full w-[85%] rounded-full"></div>
+                        </div>
+                     </div>
+                 </div>
+             </div>
+
+             {/* Gradients */}
+             <div className="bg-white p-8 rounded-2xl border border-slate-200">
+                <h3 className="font-mona text-xl font-bold text-[#353B5B] mb-8">Brand Gradients</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="h-24 rounded-lg bg-gradient-to-r from-[#28CCCD] to-[#6AFADF] relative group">
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/10 transition-opacity rounded-lg">
+                            <span className="text-white text-xs font-bold font-mono">Teal &rarr; Mint</span>
+                        </div>
+                    </div>
+                    <div className="h-24 rounded-lg bg-gradient-to-r from-[#353B5B] to-[#525C75] relative group">
+                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-white/10 transition-opacity rounded-lg">
+                            <span className="text-white text-xs font-bold font-mono">Navy &rarr; Slate</span>
+                        </div>
+                    </div>
+                    <div className="h-24 rounded-lg bg-gradient-to-r from-[#0FB6B7] to-[#14E2CE] relative group">
+                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/10 transition-opacity rounded-lg">
+                            <span className="text-white text-xs font-bold font-mono">CTA &rarr; Accent</span>
+                        </div>
+                    </div>
+                </div>
+             </div>
+
+          </div>
+         )}
+      </main>
+
+      <footer className="max-w-7xl mx-auto px-6 py-8 border-t border-slate-200 mt-12 text-center">
+        <p className="font-satoshi text-slate-400 text-sm">© {new Date().getFullYear()} Agentic Marketing Pro. Internal Use Only.</p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
